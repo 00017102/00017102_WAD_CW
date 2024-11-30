@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using _00017102_WAD_CW_server.Data;
 using _00017102_WAD_CW_server.models;
+using _00017102_WAD_CW_server.Repositories;
 
 namespace _00017102_WAD_CW_server.Controllers
 {
@@ -14,44 +15,62 @@ namespace _00017102_WAD_CW_server.Controllers
     [Route("api/[controller]")]
     public class PostsController : ControllerBase
     {
+        private readonly IRepository<Post> _postRepository;
         private readonly GeneralDbContext _context;
 
-        public PostsController(GeneralDbContext context)
+        public PostsController(IRepository<Post> postRepository, GeneralDbContext context)
         {
+            _postRepository = postRepository;
             _context = context;
         }
 
         // GET: api/posts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Post>>> GetPosts()
+        public async Task<IActionResult> GetPosts()
         {
-            return await _context.Posts.Include(p => p.Category).Include(p => p.Comments).ToListAsync();
+            try
+            {
+                var posts = await _postRepository.GetAllAsync();
+                return Ok(posts);
+            }
+            catch (Exception ex) 
+            { 
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET: api/posts/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Post>> GetPost(int id)
+        public async Task<IActionResult> GetPost(int id)
         {
-            var post = await _context.Posts
-                .Include(p => p.Category)
-                .Include(p => p.Comments)
-                .FirstOrDefaultAsync(p => p.Id == id);
-
-            if (post == null)
+            try
             {
-                return NotFound();
+                var post = await _postRepository.GetByIdAsync(id);
+                if (post == null)
+                {
+                    return NotFound();
+                }
+                    return Ok(post); 
             }
-
-            return post;
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // POST: api/posts
         [HttpPost]
         public async Task<ActionResult<Post>> CreatePost(Post post)
         {
-            _context.Posts.Add(post);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetPost), new { id = post.Id }, post);
+            try
+            {
+                await _postRepository.CreateAsync(post);
+                return CreatedAtAction(nameof(GetPost), new { id = post.Id }, post);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // PUT: api/posts/{id}
@@ -62,26 +81,16 @@ namespace _00017102_WAD_CW_server.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(post).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PostExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                await _postRepository.UpdateAsync(post);
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 
@@ -89,21 +98,19 @@ namespace _00017102_WAD_CW_server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePost(int id)
         {
-            var post = await _context.Posts.FindAsync(id);
-            if (post == null)
+            try
             {
-                return NotFound();
+                bool result = await _postRepository.DeleteAsync(id);
+                if (!result)
+                {
+                    return NotFound();
+                }
+                return NoContent();
             }
-
-            _context.Posts.Remove(post);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool PostExists(int id)
-        {
-            return _context.Posts.Any(p => p.Id == id);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

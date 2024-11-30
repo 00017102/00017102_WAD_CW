@@ -1,8 +1,10 @@
 ﻿using _00017102_WAD_CW_server.Data;
 using _00017102_WAD_CW_server.models;
+using _00017102_WAD_CW_server.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using System;
 
 namespace _00017102_WAD_CW_server.Controllers
@@ -11,40 +13,63 @@ namespace _00017102_WAD_CW_server.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
+        private readonly IRepository<Category> _categoryRepository;
         private readonly GeneralDbContext _context;
 
-        public CategoriesController(GeneralDbContext context)
+        public CategoriesController(IRepository<Category> categoryRepository, GeneralDbContext context)
         {
+            _categoryRepository = categoryRepository;
             _context = context;
         }
 
         // GET: api/categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public async Task<IActionResult> GetCategories()
         {
-            return await _context.Categories.ToListAsync();
+            try
+            {
+                var categories = await _categoryRepository.GetAllAsync();
+                return Ok(categories);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
 
         // GET: api/categories/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<IActionResult> GetCategory(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            try
             {
-                return NotFound();
+                var category = await _categoryRepository.GetByIdAsync(id);
+                if (category == null)
+                {
+                    return NotFound();
+                }
+                return Ok(category);
             }
-
-            return category;
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // POST: api/categories
         [HttpPost]
-        public async Task<ActionResult<Category>> CreateCategory(Category category)
+        public async Task<IActionResult> CreateCategory(Category category)
         {
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, category);
+            try
+            {
+                await _categoryRepository.CreateAsync(category);
+                return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, category);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // PUT: api/categories/{id}
@@ -55,47 +80,35 @@ namespace _00017102_WAD_CW_server.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(category).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CategoryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                await _categoryRepository.UpdateAsync(category);
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // DELETE: api/categories/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            try
             {
-                return NotFound();
+                bool result = await _categoryRepository.DeleteAsync(id);
+                if (!result)
+                {
+                    return NotFound();
+                }
+                return NoContent();
             }
-
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool CategoryExists(int id)
-        {
-            return _context.Categories.Any(c => c.Id == id);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
