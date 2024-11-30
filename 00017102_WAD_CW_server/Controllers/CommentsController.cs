@@ -1,4 +1,5 @@
 ﻿using _00017102_WAD_CW_server.Data;
+using _00017102_WAD_CW_server.DTOs;
 using _00017102_WAD_CW_server.models;
 using _00017102_WAD_CW_server.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,14 @@ namespace _00017102_WAD_CW_server.Controllers
             try
             {
                 var comments = await _commentsRepository.GetAllAsync();
-                return Ok(comments);
+                var response = comments.Select(c => new CommentResponseDTO
+                {
+                    Id = c.Id,
+                    Content = c.Content,
+                    CreatedDate = c.CreatedDate,
+                    AuthorName = c.AuthorName,
+                });
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -46,7 +54,14 @@ namespace _00017102_WAD_CW_server.Controllers
                 {
                     return NotFound();
                 }
-                return Ok(comment);
+                var response = new CommentResponseDTO 
+                { 
+                    Id = comment.Id,
+                    Content = comment.Content,
+                    CreatedDate = comment.CreatedDate,
+                    AuthorName = comment.AuthorName,
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -56,12 +71,23 @@ namespace _00017102_WAD_CW_server.Controllers
 
         // POST: api/comments
         [HttpPost]
-        public async Task<IActionResult> CreateComment(Comment comment)
+        public async Task<IActionResult> CreateComment(CommentCreateDTO commentDto)
         {
             try
             {
-                await _commentsRepository.CreateAsync(comment);
-                return CreatedAtAction(nameof(GetComment), new { id = comment.Id }, comment);
+                var comment = new Comment
+                {
+                    AuthorName = commentDto.AuthorName,
+                    Content = commentDto.Content,
+                    PostId = commentDto.PostId,
+                    CreatedDate = DateTime.Now,
+                };
+                var result = await _commentsRepository.CreateAsync(comment);
+                if (result)
+                {
+                    return NoContent();
+                }
+                return BadRequest("Invalid CategoryId");
             }
             catch (Exception ex)
             {

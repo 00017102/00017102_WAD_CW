@@ -15,8 +15,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<GeneralDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
 
-builder.Services.AddTransient<IRepository<Post>, BaseRepository<Post>>();
-builder.Services.AddTransient<IRepository<Comment>, BaseRepository<Comment>>();
+builder.Services.AddTransient<IRepository<Post>, PostRepository>();
+builder.Services.AddTransient<IRepository<Comment>, CommentRepository>();
 builder.Services.AddTransient<IRepository<Category>, BaseRepository<Category>>();
 
 var app = builder.Build();

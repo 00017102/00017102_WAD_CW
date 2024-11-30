@@ -1,7 +1,9 @@
 ﻿using _00017102_WAD_CW_server.Data;
+using _00017102_WAD_CW_server.DTOs;
 using _00017102_WAD_CW_server.models;
 using _00017102_WAD_CW_server.Repositories;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
@@ -29,7 +31,13 @@ namespace _00017102_WAD_CW_server.Controllers
             try
             {
                 var categories = await _categoryRepository.GetAllAsync();
-                return Ok(categories);
+                var response = categories.Select(c => new CategoryResponseDTO
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    
+                });
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -49,7 +57,8 @@ namespace _00017102_WAD_CW_server.Controllers
                 {
                     return NotFound();
                 }
-                return Ok(category);
+                var response = new CategoryResponseDTO { Id = category.Id, Name = category.Name};
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -59,12 +68,20 @@ namespace _00017102_WAD_CW_server.Controllers
 
         // POST: api/categories
         [HttpPost]
-        public async Task<IActionResult> CreateCategory(Category category)
+        public async Task<IActionResult> CreateCategory(CategoryCreateDTO categoryDTO)
         {
             try
             {
-                await _categoryRepository.CreateAsync(category);
-                return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, category);
+                var category = new Category
+                {
+                    Name = categoryDTO.Name,
+                };
+                var result = await _categoryRepository.CreateAsync(category);
+                if (result)
+                {
+                    return NoContent();
+                }
+                return BadRequest("Invalid CategoryId");
             }
             catch (Exception ex)
             {
@@ -74,17 +91,23 @@ namespace _00017102_WAD_CW_server.Controllers
 
         // PUT: api/categories/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCategory(int id, Category category)
+        public async Task<IActionResult> UpdateCategory(int id, CategoryCreateDTO categoryDTO)
         {
-            if (id != category.Id)
+            Category category = await _categoryRepository.GetByIdAsync(id);
+            if (category == null)
             {
                 return BadRequest();
             }
             try
             {
-                await _categoryRepository.UpdateAsync(category);
+                category.Name = categoryDTO.Name;
+                var result = await _categoryRepository.UpdateAsync(category);
 
-                return NoContent();
+                if (result)
+                {
+                    return NoContent();
+                }
+                return BadRequest("Invalid CategoryId");
             }
             catch (Exception ex)
             {

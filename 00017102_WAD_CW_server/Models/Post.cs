@@ -4,12 +4,12 @@
     {
         public int Id {  get; set; }
         public string Title { get; set; }
-
+        public String AuthorName { get; set; }
         public string Content { get; set; }
 
         public DateTime CreatedDate { get; set; }
 
-        public DateTime LastMOdifiedDate { get; set; }
+        public DateTime LastModifiedDate { get; set; }
 
         //foreign key
         public int CategoryId { get; set; }

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using _00017102_WAD_CW_server.Data;
 using _00017102_WAD_CW_server.models;
 using _00017102_WAD_CW_server.Repositories;
+using _00017102_WAD_CW_server.DTOs;
 
 namespace _00017102_WAD_CW_server.Controllers
 {
@@ -31,7 +32,17 @@ namespace _00017102_WAD_CW_server.Controllers
             try
             {
                 var posts = await _postRepository.GetAllAsync();
-                return Ok(posts);
+                var response = posts.Select(p => new PostResponseDTO
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Content = p.Content,
+                    AuthorName = p.AuthorName,
+                    CreatedDate = p.CreatedDate,
+                    LastModifiedDate = p.LastModifiedDate,
+                    CategoryName = p.Category.Name,
+                });
+                return Ok(response);
             }
             catch (Exception ex) 
             { 
@@ -46,11 +57,21 @@ namespace _00017102_WAD_CW_server.Controllers
             try
             {
                 var post = await _postRepository.GetByIdAsync(id);
+                var response = new PostResponseDTO
+                {
+                    Id = post.Id,
+                    Title = post.Title,
+                    Content = post.Content,
+                    AuthorName = post.AuthorName,
+                    CreatedDate = post.CreatedDate,
+                    LastModifiedDate = post.LastModifiedDate,
+                    CategoryName= post.Category.Name,
+                };
                 if (post == null)
                 {
                     return NotFound();
                 }
-                    return Ok(post); 
+                return Ok(response); 
             }
             catch (Exception ex)
             {
@@ -60,12 +81,25 @@ namespace _00017102_WAD_CW_server.Controllers
 
         // POST: api/posts
         [HttpPost]
-        public async Task<ActionResult<Post>> CreatePost(Post post)
+        public async Task<IActionResult> CreatePost(PostCreateDTO postDTO)
         {
             try
             {
-                await _postRepository.CreateAsync(post);
-                return CreatedAtAction(nameof(GetPost), new { id = post.Id }, post);
+                var post = new Post
+                {
+                    Title = postDTO.Title,
+                    Content = postDTO.Content,
+                    AuthorName = postDTO.AuthorName,
+                    CreatedDate = DateTime.Now,
+                    LastModifiedDate = DateTime.Now,
+                    CategoryId = postDTO.CategoryId,
+                };
+                var result = await _postRepository.CreateAsync(post);
+                if (result)
+                {
+                    return NoContent();
+                }
+                return BadRequest("Invalid CategoryId");
             }
             catch (Exception ex)
             {
@@ -75,17 +109,26 @@ namespace _00017102_WAD_CW_server.Controllers
 
         // PUT: api/posts/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePost(int id, Post post)
+        public async Task<IActionResult> UpdatePost(int id, PostCreateDTO postDTO)
         {
-            if (id != post.Id)
+            Post post = await _postRepository.GetByIdAsync(id);
+            if (post == null)
             {
                 return BadRequest();
             }
             try
             {
-                await _postRepository.UpdateAsync(post);
-
-                return NoContent();
+                post.Title = postDTO.Title;
+                post.Content = postDTO.Content;
+                post.AuthorName = postDTO.AuthorName;
+                post.LastModifiedDate = DateTime.Now;
+                post.CategoryId = postDTO.CategoryId;
+                var result = await _postRepository.UpdateAsync(post);
+                if (result)
+                {
+                    return NoContent();
+                }
+                return BadRequest("Invalid CategoryId");
             }
             catch (Exception ex)
             {

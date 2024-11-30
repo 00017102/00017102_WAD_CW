@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using _00017102_WAD_CW_server.Data;
 
@@ -11,9 +12,11 @@ using _00017102_WAD_CW_server.Data;
 namespace _00017102_WAD_CW_server.Migrations
 {
     [DbContext(typeof(GeneralDbContext))]
-    partial class GeneralDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241130144812_UpdateDBAuthorNamesAdded")]
+    partial class UpdateDBAuthorNamesAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,6 +32,9 @@ namespace _00017102_WAD_CW_server.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -46,10 +52,6 @@ namespace _00017102_WAD_CW_server.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AuthorName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -76,10 +78,6 @@ namespace _00017102_WAD_CW_server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AuthorName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -90,7 +88,7 @@ namespace _00017102_WAD_CW_server.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("LastModifiedDate")
+                    b.Property<DateTime>("LastMOdifiedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
