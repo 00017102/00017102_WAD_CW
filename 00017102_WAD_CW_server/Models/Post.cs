@@ -15,6 +15,7 @@
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 
+        //navigation property
         public ICollection<Comment> Comments { get; set; }
 
     }

@@ -6,6 +6,8 @@
 
         public string Name { get; set; }
         public DateTime CreatedDate { get; set; }
+
+        //navigation property
         public ICollection<Post> Posts { get; set; }
     }
 }
