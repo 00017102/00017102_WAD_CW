@@ -87,7 +87,7 @@ namespace _00017102_WAD_CW_server.Controllers
                 {
                     return NoContent();
                 }
-                return BadRequest("Invalid CategoryId");
+                return BadRequest("Invalid PostId");
             }
             catch (Exception ex)
             {
