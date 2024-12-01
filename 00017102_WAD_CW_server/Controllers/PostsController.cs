@@ -40,6 +40,7 @@ namespace _00017102_WAD_CW_server.Controllers
                     AuthorName = p.AuthorName,
                     CreatedDate = p.CreatedDate,
                     LastModifiedDate = p.LastModifiedDate,
+                    CategoryId = p.CategoryId,
                     CategoryName = p.Category.Name,
                 });
                 return Ok(response);
@@ -65,6 +66,7 @@ namespace _00017102_WAD_CW_server.Controllers
                         AuthorName = c.AuthorName,
                         CreatedDate = c.CreatedDate,
                         Content = c.Content,
+                        PostId = c.PostId,
                     }).ToList();
                     var response = new PostWithCommentsResponseDTO
                     {
@@ -75,6 +77,7 @@ namespace _00017102_WAD_CW_server.Controllers
                         CreatedDate = post.CreatedDate,
                         LastModifiedDate = post.LastModifiedDate,
                         CategoryName = post.Category.Name,
+                        CategoryId = post.CategoryId,
                         Comments = comments,
                     };
                     return Ok(response);

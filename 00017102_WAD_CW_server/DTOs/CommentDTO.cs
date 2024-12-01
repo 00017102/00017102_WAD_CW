@@ -9,6 +9,7 @@
     public class CommentResponseDTO
     {
         public int Id { get; set; }
+        public int PostId { get; set; }
         public string AuthorName { get; set; }
         public DateTime CreatedDate { get; set; }
         public string Content { get; set; }

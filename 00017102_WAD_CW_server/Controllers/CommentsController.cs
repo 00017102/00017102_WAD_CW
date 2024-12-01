@@ -34,6 +34,7 @@ namespace _00017102_WAD_CW_server.Controllers
                     Content = c.Content,
                     CreatedDate = c.CreatedDate,
                     AuthorName = c.AuthorName,
+                    PostId = c.PostId,
                 });
                 return Ok(response);
             }
@@ -60,6 +61,7 @@ namespace _00017102_WAD_CW_server.Controllers
                     Content = comment.Content,
                     CreatedDate = comment.CreatedDate,
                     AuthorName = comment.AuthorName,
+                    PostId = comment.PostId,
                 };
                 return Ok(response);
             }

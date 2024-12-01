@@ -21,6 +21,8 @@ namespace _00017102_WAD_CW_server.DTOs
         public DateTime CreatedDate { get; set; }
 
         public DateTime LastModifiedDate { get; set; }
+
+        public int CategoryId { get; set; }
         public string CategoryName { get; set; }
     }
 
@@ -35,6 +37,7 @@ namespace _00017102_WAD_CW_server.DTOs
         public DateTime CreatedDate { get; set; }
 
         public DateTime LastModifiedDate { get; set; }
+        public int CategoryId { get; set; }
         public string CategoryName { get; set; }
         public ICollection<CommentResponseDTO> Comments { get; set; }
     }

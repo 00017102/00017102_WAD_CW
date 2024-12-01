@@ -82,6 +82,7 @@ namespace _00017102_WAD_CW_server.Controllers
                         AuthorName = p.AuthorName,
                         CreatedDate = p.CreatedDate,
                         LastModifiedDate = p.LastModifiedDate,
+                        CategoryId = p.CategoryId,
                         CategoryName = p.Category.Name,
                     }).ToList();
                     var response = new CategoryWithPostsResponseDTO { Id = category.Id, Name = category.Name, Posts = posts };

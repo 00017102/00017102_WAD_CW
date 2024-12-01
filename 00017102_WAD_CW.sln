@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35514.174 d17.12
+VisualStudioVersion = 17.12.35514.174
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "00017102_WAD_CW_server", "00017102_WAD_CW_server\00017102_WAD_CW_server.csproj", "{FB1BF1F1-98AA-426E-8A83-664FE2C1B87D}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "00017102_WAD_CW_client", "00017102_WAD_CW_client\00017102_WAD_CW_client.esproj", "{6C5593B9-DFB1-42AC-A57B-EFF8571512AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,12 @@ Global
 		{FB1BF1F1-98AA-426E-8A83-664FE2C1B87D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB1BF1F1-98AA-426E-8A83-664FE2C1B87D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB1BF1F1-98AA-426E-8A83-664FE2C1B87D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C5593B9-DFB1-42AC-A57B-EFF8571512AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C5593B9-DFB1-42AC-A57B-EFF8571512AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C5593B9-DFB1-42AC-A57B-EFF8571512AC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{6C5593B9-DFB1-42AC-A57B-EFF8571512AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C5593B9-DFB1-42AC-A57B-EFF8571512AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C5593B9-DFB1-42AC-A57B-EFF8571512AC}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
