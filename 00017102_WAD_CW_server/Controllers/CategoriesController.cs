@@ -15,10 +15,10 @@ namespace _00017102_WAD_CW_server.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly IRepository<Category> _categoryRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly GeneralDbContext _context;
 
-        public CategoriesController(IRepository<Category> categoryRepository, GeneralDbContext context)
+        public CategoriesController(ICategoryRepository categoryRepository, GeneralDbContext context)
         {
             _categoryRepository = categoryRepository;
             _context = context;
@@ -59,6 +59,39 @@ namespace _00017102_WAD_CW_server.Controllers
                 }
                 var response = new CategoryResponseDTO { Id = category.Id, Name = category.Name};
                 return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        // GET: api/categories/filter/{id}
+        [HttpGet("filter/{id}")]
+        public async Task<IActionResult> GetCategoryWithPosts(int id)
+        {
+            try
+            {
+                var category = await _categoryRepository.GetCategoryWithPostsAsync(id);
+                if (category != null)
+                {
+                    var posts = category.Posts.Select(p => new PostResponseDTO
+                    {
+                        Id = p.Id,
+                        Title = p.Title,
+                        Content = p.Content,
+                        AuthorName = p.AuthorName,
+                        CreatedDate = p.CreatedDate,
+                        LastModifiedDate = p.LastModifiedDate,
+                        CategoryName = p.Category.Name,
+                    }).ToList();
+                    var response = new CategoryWithPostsResponseDTO { Id = category.Id, Name = category.Name, Posts = posts };
+                    return Ok(response);
+                }
+                else
+                {
+                    return NotFound();
+                }
+
             }
             catch (Exception ex)
             {

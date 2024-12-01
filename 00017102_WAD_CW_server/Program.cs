@@ -18,6 +18,8 @@ builder.Services.AddDbContext<GeneralDbContext>(options =>
 builder.Services.AddTransient<IRepository<Post>, PostRepository>();
 builder.Services.AddTransient<IRepository<Comment>, CommentRepository>();
 builder.Services.AddTransient<IRepository<Category>, BaseRepository<Category>>();
+builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
+
 
 var app = builder.Build();
 

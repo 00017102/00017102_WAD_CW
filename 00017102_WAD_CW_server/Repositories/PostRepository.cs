@@ -31,7 +31,7 @@ namespace _00017102_WAD_CW_server.Repositories
 
         public override async Task<Post> GetByIdAsync(int id)
         {
-            return await _context.Posts.Include(p=>p.Category).FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.Posts.Include(p => p.Category).Include(p => p.Comments).FirstOrDefaultAsync(p => p.Id == id);
         }
     }
 }

@@ -57,21 +57,32 @@ namespace _00017102_WAD_CW_server.Controllers
             try
             {
                 var post = await _postRepository.GetByIdAsync(id);
-                var response = new PostResponseDTO
+                if (post != null)
                 {
-                    Id = post.Id,
-                    Title = post.Title,
-                    Content = post.Content,
-                    AuthorName = post.AuthorName,
-                    CreatedDate = post.CreatedDate,
-                    LastModifiedDate = post.LastModifiedDate,
-                    CategoryName= post.Category.Name,
-                };
-                if (post == null)
+                    var comments = post.Comments.Select(c => new CommentResponseDTO
+                    {
+                        Id = c.Id,
+                        AuthorName = c.AuthorName,
+                        CreatedDate = c.CreatedDate,
+                        Content = c.Content,
+                    }).ToList();
+                    var response = new PostWithCommentsResponseDTO
+                    {
+                        Id = post.Id,
+                        Title = post.Title,
+                        Content = post.Content,
+                        AuthorName = post.AuthorName,
+                        CreatedDate = post.CreatedDate,
+                        LastModifiedDate = post.LastModifiedDate,
+                        CategoryName = post.Category.Name,
+                        Comments = comments,
+                    };
+                    return Ok(response);
+                }
+                else
                 {
                     return NotFound();
                 }
-                return Ok(response); 
             }
             catch (Exception ex)
             {
