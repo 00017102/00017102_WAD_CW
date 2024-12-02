@@ -22,7 +22,7 @@ import { CategoryDetailComponent } from './components/category-detail/category-d
     PostsComponent,
     PostDetailComponent,
     PostFormComponent,
-    CategoryDetailComponent
+    CategoryDetailComponent,
   ],
   imports: [
     BrowserModule,

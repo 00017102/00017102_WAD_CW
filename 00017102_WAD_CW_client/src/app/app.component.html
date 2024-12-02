@@ -1,5 +1,33 @@
 <div class="main-container d-flex flex-column min-vh-100">
-  <app-header></app-header>
+  <app-header (sideMenuToggle)="toggleSideMenu()"></app-header>
+
+  <!-- Side Menu -->
+  <div class="offcanvas offcanvas-start"
+       [ngClass]="{ 'show': isSideMenuOpen }"
+       tabindex="-1"
+       style="width: 250px; background-color: #f8f9fa; z-index: 1045;">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">Navigation</h5>
+      <button type="button"
+              class="btn-close"
+              (click)="toggleSideMenu()"
+              aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <a routerLink="/posts" (click)="onNavigate()" class="text-decoration-none">Posts</a>
+        </li>
+        <li class="list-group-item">
+          <a routerLink="/add-post" (click)="onNavigate()" class="text-decoration-none">Add Post</a>
+        </li>
+        <li class="list-group-item">
+          <a routerLink="/categories" (click)="onNavigate()" class="text-decoration-none">Categories</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
   <div class="flex-grow-1">
     <router-outlet></router-outlet>
   </div>
