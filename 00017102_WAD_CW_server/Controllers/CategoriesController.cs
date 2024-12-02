@@ -111,9 +111,9 @@ namespace _00017102_WAD_CW_server.Controllers
                     Name = categoryDTO.Name,
                 };
                 var result = await _categoryRepository.CreateAsync(category);
-                if (result)
+                if (result != null)
                 {
-                    return NoContent();
+                    return Ok(result);
                 }
                 return BadRequest("Invalid CategoryId");
             }
@@ -137,9 +137,9 @@ namespace _00017102_WAD_CW_server.Controllers
                 category.Name = categoryDTO.Name;
                 var result = await _categoryRepository.UpdateAsync(category);
 
-                if (result)
+                if (result != null)
                 {
-                    return NoContent();
+                    return Ok(result);
                 }
                 return BadRequest("Invalid CategoryId");
             }

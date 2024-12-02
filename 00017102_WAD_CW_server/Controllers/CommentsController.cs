@@ -85,9 +85,9 @@ namespace _00017102_WAD_CW_server.Controllers
                     CreatedDate = DateTime.Now,
                 };
                 var result = await _commentsRepository.CreateAsync(comment);
-                if (result)
+                if (result != null)
                 {
-                    return NoContent();
+                    return Ok(result);
                 }
                 return BadRequest("Invalid PostId");
             }

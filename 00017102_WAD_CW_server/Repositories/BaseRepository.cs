@@ -25,18 +25,18 @@ namespace _00017102_WAD_CW_server.Repositories
             return await _dbSet.FindAsync(id);
         }
 
-        public virtual async Task<bool> CreateAsync(T entity)
+        public virtual async Task<T?> CreateAsync(T entity)
         {
-            await _dbSet.AddAsync(entity);
+            var result = await _dbSet.AddAsync(entity);
             await _context.SaveChangesAsync();
-            return true;
+            return result.Entity;
         }
 
-        public virtual async Task<bool> UpdateAsync(T entity)
+        public virtual async Task<T?> UpdateAsync(T entity)
         {
-            _dbSet.Update(entity);
+            var result = _dbSet.Update(entity);
             await _context.SaveChangesAsync();
-            return true;
+            return result.Entity;
         }
 
         public async Task<bool> DeleteAsync(int id)

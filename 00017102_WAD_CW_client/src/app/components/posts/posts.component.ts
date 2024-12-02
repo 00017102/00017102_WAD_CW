@@ -3,12 +3,13 @@ import { Post } from '../../models/post';
 import { ApiService } from '../../services/api.service';
 
 @Component({
-  selector: 'app-post-list',
+  selector: 'app-posts',
+  standalone: false,
   
-  templateUrl: './post-list.component.html',
-  styleUrls: ['./post-list.component.css']
+  templateUrl: './posts.component.html',
+  styleUrl: './posts.component.css'
 })
-export class PostListComponent implements OnInit{
+export class PostsComponent implements OnInit {
   posts: Post[] = [];
 
   constructor(private apiService: ApiService) { }

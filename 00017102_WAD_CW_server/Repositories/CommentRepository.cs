@@ -11,16 +11,16 @@ namespace _00017102_WAD_CW_server.Repositories
             _context = context;
         }
 
-        public override async Task<bool> CreateAsync(Comment entity)
+        public override async Task<Comment?> CreateAsync(Comment entity)
         {
             var post = await _context.Posts.FindAsync(entity.PostId);
             if (post == null)
             {
-                return false;
+                return null;
             }
-            await _context.Comments.AddAsync(entity);
+            var result = await _context.Comments.AddAsync(entity);
             await _context.SaveChangesAsync();
-            return true;
+            return result.Entity;
         }
     }
 }

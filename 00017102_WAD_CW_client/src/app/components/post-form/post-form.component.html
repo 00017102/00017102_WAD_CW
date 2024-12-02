@@ -1,0 +1,98 @@
+<div class="container mt-4">
+  <h1>{{ isEditMode ? 'Edit Post' : 'Add New Post' }}</h1>
+  <form (ngSubmit)="submitForm()" #postForm="ngForm">
+    <!-- Title -->
+    <div class="mb-3">
+      <label for="title" class="form-label">Title</label>
+      <input type="text"
+             id="title"
+             class="form-control"
+             [(ngModel)]="post.title"
+             name="title"
+             required />
+    </div>
+
+    <!-- Author Name -->
+    <div class="mb-3">
+      <label for="authorName" class="form-label">Author Name</label>
+      <input type="text"
+             id="authorName"
+             class="form-control"
+             [(ngModel)]="post.authorName"
+             name="authorName"
+             required />
+    </div>
+
+    <!-- Content -->
+    <div class="mb-3">
+      <label for="content" class="form-label">Content</label>
+      <textarea id="content"
+                class="form-control"
+                [(ngModel)]="post.content"
+                name="content"
+                rows="5"
+                required></textarea>
+    </div>
+
+    <!-- Category -->
+    <div class="mb-3">
+      <label for="category" class="form-label">Category</label>
+      <div class="d-flex">
+        <select id="category"
+                class="form-select me-2"
+                [(ngModel)]="post.categoryId"
+                name="categoryId"
+                required>
+          <option *ngFor="let category of categories" [value]="category.id">
+            {{ category.name }}
+          </option>
+        </select>
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="openCategoryDialog()">
+          Add Category
+        </button>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <button type="submit" class="btn btn-primary">
+      {{ isEditMode ? 'Save Changes' : 'Add Post' }}
+    </button>
+    <button *ngIf="isEditMode"
+            type="button"
+            class="btn btn-danger ms-2"
+            (click)="deletePost()">
+      Delete Post
+    </button>
+  </form>
+</div>
+
+<!-- Add Category Dialog -->
+<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addCategoryModalLabel">Add Category</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="newCategoryName" class="form-label">Category Name</label>
+            <input type="text"
+                   id="newCategoryName"
+                   class="form-control"
+                   [(ngModel)]="newCategory.name"
+                   name="newCategoryName" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="addCategory()">Add Category</button>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -12,16 +12,16 @@ namespace _00017102_WAD_CW_server.Repositories
             _context = context;
         }
 
-        public override async Task<bool> CreateAsync(Post entity)
+        public override async Task<Post?> CreateAsync(Post entity)
         {
             var category = await _context.Categories.FindAsync(entity.CategoryId);
             if (category == null) 
             { 
-                return false;
+                return null;
             }
-            await _context.Posts.AddAsync(entity);
+            var result = await _context.Posts.AddAsync(entity);
             await _context.SaveChangesAsync();
-            return true;
+            return result.Entity;
         }
 
         public override async Task<IEnumerable<Post>> GetAllAsync()

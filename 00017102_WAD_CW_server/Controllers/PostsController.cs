@@ -109,9 +109,9 @@ namespace _00017102_WAD_CW_server.Controllers
                     CategoryId = postDTO.CategoryId,
                 };
                 var result = await _postRepository.CreateAsync(post);
-                if (result)
+                if (result != null)
                 {
-                    return NoContent();
+                    return Ok(result);
                 }
                 return BadRequest("Invalid CategoryId");
             }
@@ -138,9 +138,9 @@ namespace _00017102_WAD_CW_server.Controllers
                 post.LastModifiedDate = DateTime.Now;
                 post.CategoryId = postDTO.CategoryId;
                 var result = await _postRepository.UpdateAsync(post);
-                if (result)
+                if (result != null)
                 {
-                    return NoContent();
+                    return Ok(result);
                 }
                 return BadRequest("Invalid CategoryId");
             }

@@ -22,12 +22,12 @@ export class ApiService {
     return this.http.get<Post>(`${this.baseUrl}/posts/${id}`);
   }
 
-  createPost(post: Post): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/posts`, post);
+  createPost(post: Post): Observable<Post | null> {
+    return this.http.post<Post | null>(`${this.baseUrl}/posts`, post);
   }
 
-  updatePost(id: number, post: Post): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/posts/${id}`, post);
+  updatePost(id: number, post: Post): Observable<Post | null> {
+    return this.http.put<Post | null>(`${this.baseUrl}/posts/${id}`, post);
   }
 
   deletePost(id: number): Observable<void> {
@@ -47,12 +47,12 @@ export class ApiService {
     return this.http.get<Category>(`${this.baseUrl}/categories/filter/${id}`);
   }
 
-  createCategory(category: Category): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/categories`, category);
+  createCategory(category: Category): Observable<Category | null> {
+    return this.http.post<Category | null>(`${this.baseUrl}/categories`, category);
   }
 
-  updateCategory(id: number, category: Category): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/categories/${id}`, category);
+  updateCategory(id: number, category: Category): Observable<Category | null> {
+    return this.http.put<Category | null>(`${this.baseUrl}/categories/${id}`, category);
   }
 
   deleteCategory(id: number): Observable<void> {
@@ -68,11 +68,7 @@ export class ApiService {
     return this.http.get<CommentModel>(`${this.baseUrl}/comments/${id}`);
   }
 
-  createComment(comment: CommentModel): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/comments`, comment);
-  }
-
-  deleteComment(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/comments/${id}`);
+  createComment(comment: CommentModel): Observable<CommentModel | null> {
+    return this.http.post<CommentModel | null>(`${this.baseUrl}/comments`, comment);
   }
 }

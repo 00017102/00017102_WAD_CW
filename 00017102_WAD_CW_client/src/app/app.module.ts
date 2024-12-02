@@ -4,18 +4,25 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PostListComponent } from './components/post-list/post-list.component';
-import { PostDetailsComponent } from './components/post-details/post-details.component';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { AddCategoryDialogComponent } from './components/add-category-dialog/add-category-dialog.component';
 import { FormsModule } from '@angular/forms';
+import { CategoriesComponent } from './components/categories/categories.component';
+import { HeaderComponent } from './components/shared/header/header.component';
+import { FooterComponent } from './components/shared/footer/footer.component';
+import { PostsComponent } from './components/posts/posts.component';
+import { PostDetailComponent } from './components/post-detail/post-detail.component';
+import { PostFormComponent } from './components/post-form/post-form.component';
+import { CategoryDetailComponent } from './components/category-detail/category-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PostListComponent,
-    PostDetailsComponent,
-    AddCategoryDialogComponent
+    CategoriesComponent,
+    HeaderComponent,
+    FooterComponent,
+    PostsComponent,
+    PostDetailComponent,
+    PostFormComponent,
+    CategoryDetailComponent
   ],
   imports: [
     BrowserModule,
