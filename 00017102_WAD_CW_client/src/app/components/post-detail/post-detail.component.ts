@@ -36,9 +36,11 @@ export class PostDetailComponent implements OnInit {
         content: this.newComment,
         authorName: 'Anonymous',
       };
-      this.apiService.createComment(comment).subscribe(() => {
-        this.comments.push(comment);
-        this.newComment = '';
+      this.apiService.createComment(comment).subscribe((data) => {
+        if (data != null) {
+          this.comments.push(data);
+          this.newComment = '';
+        }
       });
     }
   }

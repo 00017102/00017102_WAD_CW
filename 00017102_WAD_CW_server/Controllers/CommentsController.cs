@@ -87,7 +87,13 @@ namespace _00017102_WAD_CW_server.Controllers
                 var result = await _commentsRepository.CreateAsync(comment);
                 if (result != null)
                 {
-                    return Ok(result);
+                    return Ok(new CommentResponseDTO
+                    {
+                        Id = result.Id,
+                        Content = result.Content,
+                        CreatedDate = result.CreatedDate,
+                        PostId= result.PostId,
+                    });
                 }
                 return BadRequest("Invalid PostId");
             }

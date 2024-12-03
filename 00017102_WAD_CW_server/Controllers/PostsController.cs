@@ -9,6 +9,7 @@ using _00017102_WAD_CW_server.Data;
 using _00017102_WAD_CW_server.models;
 using _00017102_WAD_CW_server.Repositories;
 using _00017102_WAD_CW_server.DTOs;
+using System.Xml.Linq;
 
 namespace _00017102_WAD_CW_server.Controllers
 {
@@ -111,7 +112,18 @@ namespace _00017102_WAD_CW_server.Controllers
                 var result = await _postRepository.CreateAsync(post);
                 if (result != null)
                 {
-                    return Ok(result);
+                    var response = new PostResponseDTO
+                    {
+                        Id = result.Id,
+                        Title = result.Title,
+                        Content = result.Content,
+                        AuthorName = result.AuthorName,
+                        CreatedDate = result.CreatedDate,
+                        LastModifiedDate = result.LastModifiedDate,
+                        CategoryName = result.Category.Name,
+                        CategoryId = result.CategoryId,
+                    };
+                    return Ok(response);
                 }
                 return BadRequest("Invalid CategoryId");
             }
@@ -140,7 +152,18 @@ namespace _00017102_WAD_CW_server.Controllers
                 var result = await _postRepository.UpdateAsync(post);
                 if (result != null)
                 {
-                    return Ok(result);
+                    var response = new PostResponseDTO
+                    {
+                        Id = result.Id,
+                        Title = result.Title,
+                        Content = result.Content,
+                        AuthorName = result.AuthorName,
+                        CreatedDate = result.CreatedDate,
+                        LastModifiedDate = result.LastModifiedDate,
+                        CategoryName = result.Category.Name,
+                        CategoryId = result.CategoryId,
+                    };
+                    return Ok(response);
                 }
                 return BadRequest("Invalid CategoryId");
             }
