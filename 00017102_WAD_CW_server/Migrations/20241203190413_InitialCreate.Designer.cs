@@ -12,8 +12,8 @@ using _00017102_WAD_CW_server.Data;
 namespace _00017102_WAD_CW_server.Migrations
 {
     [DbContext(typeof(GeneralDbContext))]
-    [Migration("20241130152619_UpdateDBNew")]
-    partial class UpdateDBNew
+    [Migration("20241203190413_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,6 +40,13 @@ namespace _00017102_WAD_CW_server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Unknown"
+                        });
                 });
 
             modelBuilder.Entity("_00017102_WAD_CW_server.models.Comment", b =>

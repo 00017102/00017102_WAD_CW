@@ -37,6 +37,13 @@ namespace _00017102_WAD_CW_server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Unknown"
+                        });
                 });
 
             modelBuilder.Entity("_00017102_WAD_CW_server.models.Comment", b =>

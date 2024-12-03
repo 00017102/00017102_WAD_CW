@@ -39,7 +39,7 @@ namespace _00017102_WAD_CW_server.Repositories
             return result.Entity;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public virtual async Task<bool> DeleteAsync(int id)
         {
             var entity = await _dbSet.FindAsync(id);
             if (entity == null) return false;

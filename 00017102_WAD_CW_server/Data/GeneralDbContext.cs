@@ -12,5 +12,16 @@ namespace _00017102_WAD_CW_server.Data
         public DbSet<Comment> Comments { get; set; }
 
         public GeneralDbContext(DbContextOptions<GeneralDbContext> options) : base(options) { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Category>().HasData(new Category
+            {
+                Id = 1,
+                Name = "Unknown"
+            });
+        }
     }
 }
