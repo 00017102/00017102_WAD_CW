@@ -35,6 +35,7 @@ namespace _00017102_WAD_CW_server.Repositories
         public virtual async Task<T?> UpdateAsync(T entity)
         {
             var result = _dbSet.Update(entity);
+            _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return result.Entity;
         }
@@ -43,6 +44,7 @@ namespace _00017102_WAD_CW_server.Repositories
         {
             var entity = await _dbSet.FindAsync(id);
             if (entity == null) return false;
+            _context.Entry(entity).State = EntityState.Deleted;
 
             _dbSet.Remove(entity);
             await _context.SaveChangesAsync();

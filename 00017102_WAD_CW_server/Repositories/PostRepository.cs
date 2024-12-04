@@ -12,6 +12,25 @@ namespace _00017102_WAD_CW_server.Repositories
             _context = context;
         }
 
+        public override async Task<bool> DeleteAsync(int id)
+        {
+            var post = await _context.Posts.Include(c => c.Comments).FirstOrDefaultAsync(c => c.Id == id);
+            if (post == null) return false;
+
+            foreach (var comment in post.Comments)
+            {
+                _context.Comments.Remove(comment);
+                _context.Entry(comment).State = EntityState.Deleted;
+            }
+
+            _context.Entry(post).State = EntityState.Deleted;
+
+            _context.Posts.Remove(post);
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         public override async Task<Post?> CreateAsync(Post entity)
         {
             var category = await _context.Categories.FindAsync(entity.CategoryId);

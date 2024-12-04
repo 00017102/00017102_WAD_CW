@@ -31,7 +31,9 @@ namespace _00017102_WAD_CW_server.Repositories
             foreach(var post in category.Posts)
             {
                 post.CategoryId = defaultCategory.Id;
+                _context.Entry(post).State = EntityState.Modified;
             }
+            _context.Entry(category).State = EntityState.Deleted;
 
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
