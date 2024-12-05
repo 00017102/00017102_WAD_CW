@@ -12,6 +12,15 @@ namespace _00017102_WAD_CW_server.Repositories
             _context = context;
         }
 
+        public override async Task<Post?> UpdateAsync(Post post)
+        {
+
+            _context.Entry(post).State = EntityState.Modified;
+            var result = _context.Posts.Update(post);
+            await _context.SaveChangesAsync();
+            return await _context.Posts.Include(p => p.Category).FirstOrDefaultAsync(p => p.Id == result.Entity.Id); ;
+        }
+
         public override async Task<bool> DeleteAsync(int id)
         {
             var post = await _context.Posts.Include(c => c.Comments).FirstOrDefaultAsync(c => c.Id == id);
