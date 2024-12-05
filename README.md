@@ -55,6 +55,7 @@ This application is a simple blogging platform built using **ASP.NET Core Web AP
   - Uses **RxJS** for reactive programming.
   - Shared state management through Angular services.
 
+---
 ### API Endpoints
 
 #### Posts
